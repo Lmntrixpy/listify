@@ -161,6 +161,9 @@ def api_create_playlist():
     except sp.SpotifyError as e:
         return jsonify({"error": "spotify_error", "details": str(e)}), 500
 
+@app.get("/privacy")
+def privacy():
+    return render_template("privacy.html")
 
 @app.post("/logout")
 def logout():

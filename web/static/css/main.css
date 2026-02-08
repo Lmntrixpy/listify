@@ -9,10 +9,12 @@
   --primary-contrast: #ffffff;
   --ghost: rgba(15, 23, 42, 0.06);
   --ring: rgba(37, 99, 235, 0.25);
+  --footer-link: #555;
 
   --radius: 16px;
   --gap: 14px;
   --container: 980px;
+  
 }
 
 @media (prefers-color-scheme: dark) {
@@ -27,6 +29,7 @@
     --primary-contrast: #061022;
     --ghost: rgba(226, 232, 240, 0.08);
     --ring: rgba(59, 130, 246, 0.3);
+    --footer-link: #b3b3b3;
   }
 }
 
@@ -107,6 +110,17 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.footer__link {
+  color: var(--footer-link);
+  text-decoration: none;
+}
+
+.footer__link:hover {
+  text-decoration: underline;
 }
 
 .grid {

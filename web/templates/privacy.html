@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% block title %}Privacy Policy{% endblock %}
+
+{% block content %}
+<section class="card">
+  <h2>Privacy Policy</h2>
+
+  <p>
+    This website uses Spotify authentication to create playlists on behalf of the user.
+  </p>
+
+  <h3>Data Processing</h3>
+  <ul>
+    <li>Spotify account ID</li>
+    <li>Access tokens required to create playlists</li>
+  </ul>
+
+  <p>
+    No personal data is stored permanently.
+    All authentication data is kept temporarily in server memory (session cookies) and
+    is deleted when the session ends.
+  </p>
+
+  <h3>Third-Party Services</h3>
+  <p>
+    This application uses the Spotify Web API.
+    Data processing is subject to Spotify’s privacy policy.
+  </p>
+
+  <h3>Contact</h3>
+  <p>
+    If you have questions regarding data protection, please contact the site operator.
+  </p>
+</section>
+{% endblock %}
