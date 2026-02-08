@@ -4,12 +4,27 @@ import time
 
 from flask import Flask, jsonify, redirect, render_template, request, session, url_for
 from dotenv import load_dotenv
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 import spotify as sp
 
 load_dotenv()
 
 app = Flask(__name__)
+
+app.config.update(
+    SESSION_COOKIE_SECURE=True,     # only use HTTPS
+    SESSION_COOKIE_HTTPONLY=True,   # no JS-access
+    SESSION_COOKIE_SAMESITE="Lax",  # OAuth
+)
+
+app.wsgi_app = ProxyFix(
+    app.wsgi_app,
+    x_for=1,
+    x_proto=1,
+    x_host=1,
+)
+
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "dev-secret-change-me")
 
 DEFAULT_PLAYLIST_PUBLIC = os.environ.get("DEFAULT_PLAYLIST_PUBLIC", "false").lower() == "true"

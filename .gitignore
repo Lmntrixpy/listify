@@ -10,3 +10,7 @@ __pycache__/
 
 # Docker
 *.log
+
+# Apple Stuff
+.DS_Store
+._.DS_Store
