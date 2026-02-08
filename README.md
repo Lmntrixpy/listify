@@ -14,8 +14,9 @@ The app uses:
   - Liked Songs **or**
   - Top Tracks (with time range selection)
 - Choose the number of tracks (up to 10,000)
-- Public or private playlists
+- set playlist Public or private
 - Mobile-friendly UI with automatic dark/light mode
+- automatic language between English & German
 
 ## Requirements
 - Docker & Docker Compose
