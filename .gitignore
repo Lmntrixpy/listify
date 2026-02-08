@@ -1,0 +1,12 @@
+# Environment variables
+.env
+
+# TLS certificates / keys
+nginx/certs/
+
+# Python
+__pycache__/
+*.pyc
+
+# Docker
+*.log
