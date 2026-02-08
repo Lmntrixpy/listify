@@ -1,138 +1,105 @@
-<!doctype html>
-<html lang="de">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Lieblingssongs → Playlist</title>
-  <style>
-    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; max-width: 780px; margin: 40px auto; padding: 0 16px; }
-    .card { border: 1px solid #ddd; border-radius: 10px; padding: 16px; margin: 12px 0; }
-    label { display:block; margin: 10px 0 4px; }
-    input, select { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; }
-    button { padding: 10px 14px; border-radius: 8px; border: 1px solid #111; background: #111; color:#fff; cursor:pointer; }
-    button.secondary { background:#fff; color:#111; }
-    .row { display:flex; gap: 10px; }
-    .row > div { flex:1; }
-    .status { white-space: pre-wrap; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
-    a { color: inherit; }
-  </style>
-</head>
-<body>
-  <h1>Lieblingssongs → Playlist</h1>
+{% extends "layout.html" %}
 
-  <div class="card">
-    {% if logged_in %}
-      <div>Angemeldet als: <strong>{{ me.display_name or me.id }}</strong></div>
-      <form method="post" action="/logout" style="margin-top:10px;">
-        <button class="secondary" type="submit">Logout</button>
-      </form>
-    {% else %}
-      <div>Du musst dich mit Spotify anmelden.</div>
-      <div style="margin-top:10px;">
-        <a href="/login"><button type="button">Mit Spotify anmelden</button></a>
-      </div>
-    {% endif %}
-  </div>
+{% block title %}Lieblingssongs → Playlist{% endblock %}
 
-  <div class="card">
-    <h2>Playlist erstellen</h2>
-
-    {% if not logged_in %}
-      <div>Bitte zuerst einloggen.</div>
-    {% else %}
-      <div class="row">
-        <div>
-            <label>Quelle</label>
-            <select id="source">
-            <option value="liked" selected>Liked Songs</option>
-            <option value="top">Top Tracks</option>
-            </select>
-        </div>
-        <div>
-          <label>Zeitraum</label>
-          <select id="time_range">
-            <option value="short_term">Letzte ~4 Wochen</option>
-            <option value="medium_term">Letzte ~6 Monate</option>
-            <option value="long_term">All Time</option>
-          </select>
-        </div>
-        <div>
-          <label>Anzahl Songs (max 10.000)</label>
-          <input id="limit" type="number" min="1" max="10000" value="50" />
-        </div>
+{% block content %}
+  <section class="grid">
+    <div class="card">
+      <div class="card__header">
+        <h2 class="h2">Account</h2>
       </div>
 
-      <label>Playlist-Name</label>
-      <input id="name" type="text" value="Meine Lieblingssongs" maxlength="100" />
+      {% if logged_in %}
+        <div class="stack">
+          <div>
+            <div class="muted">Angemeldet als</div>
+            <div class="strong">{{ me.display_name or me.id }}</div>
+          </div>
 
-      <label>Beschreibung</label>
-      <input id="description" type="text" value="Automatisch erstellt aus meinen Spotify Top Tracks" maxlength="300" />
+          <form method="post" action="/logout">
+            <button class="btn btn--ghost" type="submit">Logout</button>
+          </form>
+        </div>
+      {% else %}
+        <div class="stack">
+          <p class="muted">Bitte mit Spotify anmelden, um eine Playlist zu erstellen.</p>
+          <a class="btn btn--primary" href="/login">Mit Spotify anmelden</a>
+        </div>
+      {% endif %}
+    </div>
 
-      <label>Sichtbarkeit</label>
-      <select id="public">
-        <option value="false" selected>Privat</option>
-        <option value="true">Öffentlich</option>
-      </select>
-
-      <div style="margin-top:12px;">
-        <button id="createBtn" type="button">Erstellen</button>
+    <div class="card">
+      <div class="card__header">
+        <h2 class="h2">Playlist erstellen</h2>
+        <p class="muted">Wähle Quelle, Anzahl und erstelle eine Playlist in deinem Account.</p>
       </div>
 
-      <div style="margin-top:12px;" class="status" id="status"></div>
-    {% endif %}
-  </div>
+      {% if not logged_in %}
+        <p class="muted">Bitte zuerst einloggen.</p>
+      {% else %}
+        <div class="form">
+          <div class="row">
+            <div class="field">
+              <label for="source">Quelle</label>
+              <select id="source">
+                <option value="liked" selected>Liked Songs</option>
+                <option value="top">Top Tracks</option>
+              </select>
+              <div class="help">Liked Songs nutzt deine gespeicherten Titel, Top Tracks deine meistgehörten.</div>
+            </div>
 
-<script>
-  async function createPlaylist() {
-    const statusEl = document.getElementById("status");
-    statusEl.textContent = "Arbeite ...";
+            <div class="field">
+              <label for="time_range">Zeitraum</label>
+              <select id="time_range">
+                <option value="short_term">Letzte ~4 Wochen</option>
+                <option value="medium_term">Letzte ~6 Monate</option>
+                <option value="long_term">All Time</option>
+              </select>
+              <div class="help">Nur relevant für Top Tracks.</div>
+            </div>
 
-    const body = {
-      source: document.getElementById("source").value,        // <-- hinzufügen
-      time_range: document.getElementById("time_range").value,
-      limit: Number(document.getElementById("limit").value),
-      name: document.getElementById("name").value,
-      description: document.getElementById("description").value,
-      public: document.getElementById("public").value === "true"
-    };
+            <div class="field">
+              <label for="limit">Anzahl</label>
+              <div class="limitRow">
+                <input id="limit" type="number" min="1" max="10000" value="50" inputmode="numeric" />
+                <button id="allSongsBtn" class="btn btn--ghost btn--sm" type="button" title="Setzt das Limit auf 10.000">
+                  Alle Lieder
+                </button>
+              </div>
+              <div class="help">Max. 10.000 (Spotify Playlist-Limit). Wenn weniger vorhanden sind, werden nur die vorhandenen hinzugefügt.</div>
+            </div>
+          </div>
 
-    const res = await fetch("/api/create_playlist", {
-      method: "POST",
-      headers: {"Content-Type":"application/json"},
-      body: JSON.stringify(body)
-    });
+          <div class="row">
+            <div class="field">
+              <label for="name">Playlist-Name</label>
+              <input id="name" type="text" value="Meine Lieblingssongs" maxlength="100" />
+            </div>
 
-    const data = await res.json().catch(() => ({}));
-    if (!res.ok) {
-      statusEl.textContent = "Fehler:\n" + JSON.stringify(data, null, 2);
-      return;
-    }
+            <div class="field">
+              <label for="public">Sichtbarkeit</label>
+              <select id="public">
+                <option value="false" selected>Privat</option>
+                <option value="true">Öffentlich</option>
+              </select>
+              <div class="help">Die Playlist muss öffentlich sein, damit sie für lunalist funktioniert.</div>
+            </div>
+          </div>
 
-    let msg = `OK\nTracks hinzugefügt: ${data.tracks_added}\nPlaylist ID: ${data.playlist_id}`;
-    if (data.playlist_url) msg += `\nLink: ${data.playlist_url}`;
-    statusEl.textContent = msg;
-  }
+          <div class="field">
+            <label for="description">Beschreibung</label>
+            <input id="description" type="text" value="Automatisch erstellt aus meinen Lieblingssongs" maxlength="300" />
+          </div>
 
-  const btn = document.getElementById("createBtn");
-  if (btn) btn.addEventListener("click", createPlaylist);
+          <div class="actions">
+            <button id="createBtn" class="btn btn--primary" type="button">
+              Playlist erstellen
+            </button>
+          </div>
 
-  function updateTimeRangeState() {
-    const source = document.getElementById("source").value;
-    const timeRange = document.getElementById("time_range");
-
-    if (source === "liked") {
-      timeRange.disabled = true;
-      timeRange.style.opacity = "0.5";
-    } else {
-      timeRange.disabled = false;
-      timeRange.style.opacity = "1";
-    }
-  }
-
-  updateTimeRangeState();
-
-  const sourceEl = document.getElementById("source");
-  if (sourceEl) sourceEl.addEventListener("change", updateTimeRangeState);
-</script>
-</body>
-</html>
+          <pre class="status" id="status" aria-live="polite"></pre>
+        </div>
+      {% endif %}
+    </div>
+  </section>
+{% endblock %}
