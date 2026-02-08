@@ -122,7 +122,7 @@ networks:
 #### Ports
 In the example below:
 - 3080:80 means:
-- Port 4080 on the host
+- Port 3080 on the host
 - is forwarded to port 80 inside the nginx container
 
 You can change or remove this mapping depending on how you expose the application (e.g. via another reverse proxy or a tunnel solution).
