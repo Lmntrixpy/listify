@@ -3,6 +3,7 @@ import secrets
 import time
 
 from flask import Flask, jsonify, redirect, render_template, request, session, url_for
+from flask_babel import Babel, gettext as _, get_locale as babel_get_locale
 from dotenv import load_dotenv
 from werkzeug.middleware.proxy_fix import ProxyFix
 
@@ -30,6 +31,19 @@ app.secret_key = os.environ.get("FLASK_SECRET_KEY", "dev-secret-change-me")
 DEFAULT_PLAYLIST_PUBLIC = os.environ.get("DEFAULT_PLAYLIST_PUBLIC", "false").lower() == "true"
 MAX_LIMIT = 10000
 
+
+def select_locale():
+    lang = request.args.get("lang")
+    if lang in ("de", "en"):
+        return lang
+    return request.accept_languages.best_match(["de", "en"]) or "en"
+
+babel = Babel(locale_selector=select_locale)
+babel.init_app(app, locale_selector=select_locale)
+
+@app.context_processor
+def inject_locale():
+    return {"get_locale": lambda: str(babel_get_locale())}
 
 def _is_logged_in() -> bool:
     return "spotify_token" in session

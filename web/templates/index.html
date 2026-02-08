@@ -1,99 +1,130 @@
 {% extends "layout.html" %}
 
-{% block title %}Lieblingssongs → Playlist{% endblock %}
+{% block title %}{{ _("Liked Songs → Playlist") }}{% endblock %}
 
 {% block content %}
   <section class="grid">
     <div class="card">
       <div class="card__header">
-        <h2 class="h2">Account</h2>
+        <h2 class="h2">{{ _("Account") }}</h2>
       </div>
 
       {% if logged_in %}
         <div class="stack">
           <div>
-            <div class="muted">Angemeldet als</div>
+            <div class="muted">{{ _("Logged in as") }}</div>
             <div class="strong">{{ me.display_name or me.id }}</div>
           </div>
 
           <form method="post" action="/logout">
-            <button class="btn btn--ghost" type="submit">Logout</button>
+            <button class="btn btn--ghost" type="submit">
+              {{ _("Logout") }}
+            </button>
           </form>
         </div>
       {% else %}
         <div class="stack">
-          <p class="muted">Bitte mit Spotify anmelden, um eine Playlist zu erstellen.</p>
-          <a class="btn btn--primary" href="/login">Mit Spotify anmelden</a>
+          <p class="muted">
+            {{ _("Please log in with Spotify to create a playlist.") }}
+          </p>
+          <a class="btn btn--primary" href="/login">
+            {{ _("Login with Spotify") }}
+          </a>
         </div>
       {% endif %}
     </div>
 
     <div class="card">
       <div class="card__header">
-        <h2 class="h2">Playlist erstellen</h2>
-        <p class="muted">Wähle Quelle, Anzahl und erstelle eine Playlist in deinem Account.</p>
+        <h2 class="h2">{{ _("Create playlist") }}</h2>
+        <p class="muted">
+          {{ _("Choose a source and number of tracks to create a playlist in your account.") }}
+        </p>
       </div>
 
       {% if not logged_in %}
-        <p class="muted">Bitte zuerst einloggen.</p>
+        <p class="muted">{{ _("Please log in first.") }}</p>
       {% else %}
         <div class="form">
           <div class="row">
             <div class="field">
-              <label for="source">Quelle</label>
+              <label for="source">{{ _("Source") }}</label>
               <select id="source">
-                <option value="liked" selected>Liked Songs</option>
-                <option value="top">Top Tracks</option>
+                <option value="liked" selected>{{ _("Liked Songs") }}</option>
+                <option value="top">{{ _("Top Tracks") }}</option>
               </select>
-              <div class="help">Liked Songs nutzt deine gespeicherten Titel, Top Tracks deine meistgehörten.</div>
+              <div class="help">
+                {{ _("Liked Songs uses your saved tracks, Top Tracks uses your most listened tracks.") }}
+              </div>
             </div>
 
             <div class="field">
-              <label for="time_range">Zeitraum</label>
+              <label for="time_range">{{ _("Time range") }}</label>
               <select id="time_range">
-                <option value="short_term">Letzte ~4 Wochen</option>
-                <option value="medium_term">Letzte ~6 Monate</option>
-                <option value="long_term">All Time</option>
+                <option value="short_term">{{ _("Last ~4 weeks") }}</option>
+                <option value="medium_term">{{ _("Last ~6 months") }}</option>
+                <option value="long_term">{{ _("All time") }}</option>
               </select>
-              <div class="help">Nur relevant für Top Tracks.</div>
+              <div class="help">
+                {{ _("Only relevant for Top Tracks.") }}
+              </div>
             </div>
 
             <div class="field">
-              <label for="limit">Anzahl</label>
+              <label for="limit">{{ _("Amount") }}</label>
               <div class="limitRow">
                 <input id="limit" type="number" min="1" max="10000" value="50" inputmode="numeric" />
-                <button id="allSongsBtn" class="btn btn--ghost btn--sm" type="button" title="Setzt das Limit auf 10.000">
-                  Alle Lieder
+                <button
+                  id="allSongsBtn"
+                  class="btn btn--ghost btn--sm"
+                  type="button"
+                  title="{{ _("Sets the limit to 10,000") }}"
+                >
+                  {{ _("All songs") }}
                 </button>
               </div>
-              <div class="help">Max. 10.000 (Spotify Playlist-Limit). Wenn weniger vorhanden sind, werden nur die vorhandenen hinzugefügt.</div>
+              <div class="help">
+                {{ _("Max. 10,000 (Spotify playlist limit). If fewer tracks are available, only those will be added.") }}
+              </div>
             </div>
           </div>
 
           <div class="row">
             <div class="field">
-              <label for="name">Playlist-Name</label>
-              <input id="name" type="text" value="Meine Lieblingssongs" maxlength="100" />
+              <label for="name">{{ _("Playlist name") }}</label>
+              <input
+                id="name"
+                type="text"
+                value="{{ _('My favorite songs') }}"
+                maxlength="100"
+              />
             </div>
 
             <div class="field">
-              <label for="public">Sichtbarkeit</label>
+              <label for="public">{{ _("Visibility") }}</label>
               <select id="public">
-                <option value="false" selected>Privat</option>
-                <option value="true">Öffentlich</option>
+                <option value="false" selected>{{ _("Private") }}</option>
+                <option value="true">{{ _("Public") }}</option>
               </select>
-              <div class="help">Die Playlist muss öffentlich sein, damit sie für lunalist funktioniert.</div>
+              <div class="help">
+                {{ _("The playlist must be public in order to work with lunalist.") }}
+              </div>
             </div>
           </div>
 
           <div class="field">
-            <label for="description">Beschreibung</label>
-            <input id="description" type="text" value="Automatisch erstellt aus meinen Lieblingssongs" maxlength="300" />
+            <label for="description">{{ _("Description") }}</label>
+            <input
+              id="description"
+              type="text"
+              value="{{ _('Automatically created from my favorite songs') }}"
+              maxlength="300"
+            />
           </div>
 
           <div class="actions">
             <button id="createBtn" class="btn btn--primary" type="button">
-              Playlist erstellen
+              {{ _("Create playlist") }}
             </button>
           </div>
 

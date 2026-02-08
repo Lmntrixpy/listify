@@ -1,9 +1,11 @@
 <!doctype html>
-<html lang="de">
+<html lang="{{ get_locale() }}">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>{% block title %}Listify - Lieblingssongs → Playlist{% endblock %}</title>
+  <title>
+    {% block title %}{{ _("Listify – Liked Songs → Playlist") }}{% endblock %}
+  </title>
 
   <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
   <script defer src="{{ url_for('static', filename='js/main.js') }}"></script>
@@ -11,12 +13,19 @@
 <body>
   <header class="topbar">
     <div class="container topbar__inner">
-      <a class="brand" href="/">Listify - Lieblingssongs → Playlist</a>
+      <a class="brand" href="/">
+        {{ _("Listify – Liked Songs → Playlist") }}
+      </a>
 
       <div class="topbar__actions">
-        <button id="themeToggle" class="btn btn--ghost" type="button" aria-label="Theme umschalten">
+        <button
+          id="themeToggle"
+          class="btn btn--ghost"
+          type="button"
+          aria-label="{{ _('Toggle theme') }}"
+        >
           <span class="btn__icon" aria-hidden="true">◐</span>
-          <span class="btn__text">Theme</span>
+          <span class="btn__text">{{ _("Theme") }}</span>
         </button>
       </div>
     </div>
@@ -28,50 +37,55 @@
 
   <footer class="footer">
     <div class="container footer__inner">
-        <span class="muted">Spotify Lieblingssongs / Top Tracks zu Playlist Converter</span>
+      <span class="muted">
+        {{ _("Spotify Liked Songs / Top Tracks to Playlist Converter") }}
+      </span>
 
-        <span class="footer__links">
-          <a href="/privacy" class="footer__link">Privacy Policy</a>
-        </span>
+      <span class="footer__links">
+        <a href="/privacy" class="footer__link">
+          {{ _("Privacy Policy") }}
+        </a>
+      </span>
 
-        <a
+      <a
         class="github-link"
         href="https://github.com/Lmntrixpy/listify"
         target="_blank"
         rel="noopener noreferrer"
-        >
+        aria-label="{{ _('View project on GitHub') }}"
+      >
         <svg
-            class="github-icon"
-            viewBox="0 0 24 24"
-            aria-hidden="true"
+          class="github-icon"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
         >
-            <path
+          <path
             fill="currentColor"
             d="M12 .5C5.73.5.5 5.74.5 12.22c0 5.2 3.44 9.6 8.21 11.16.6.12.82-.27.82-.6
-                0-.3-.01-1.08-.02-2.12-3.34.75-4.04-1.66-4.04-1.66
-                -.55-1.44-1.34-1.82-1.34-1.82-1.1-.77.08-.75.08-.75
-                1.22.09 1.86 1.27 1.86 1.27
-                1.08 1.9 2.83 1.35 3.52 1.03
-                .11-.8.42-1.35.76-1.66
-                -2.66-.31-5.46-1.36-5.46-6.05
-                0-1.34.47-2.44 1.24-3.3
-                -.13-.31-.54-1.56.12-3.26
-                0 0 1.01-.33 3.3 1.26
-                .96-.27 1.99-.41 3.01-.42
-                1.02.01 2.05.15 3.01.42
-                2.28-1.59 3.29-1.26 3.29-1.26
-                .66 1.7.25 2.95.12 3.26
-                .77.86 1.23 1.96 1.23 3.3
-                0 4.7-2.81 5.73-5.49 6.04
-                .43.38.81 1.12.81 2.26
-                0 1.63-.02 2.95-.02 3.35
-                0 .33.22.72.83.6
-                4.77-1.56 8.2-5.96 8.2-11.16
-                C23.5 5.74 18.27.5 12 .5z"
-            />
+               0-.3-.01-1.08-.02-2.12-3.34.75-4.04-1.66-4.04-1.66
+               -.55-1.44-1.34-1.82-1.34-1.82-1.1-.77.08-.75.08-.75
+               1.22.09 1.86 1.27 1.86 1.27
+               1.08 1.9 2.83 1.35 3.52 1.03
+               .11-.8.42-1.35.76-1.66
+               -2.66-.31-5.46-1.36-5.46-6.05
+               0-1.34.47-2.44 1.24-3.3
+               -.13-.31-.54-1.56.12-3.26
+               0 0 1.01-.33 3.3 1.26
+               .96-.27 1.99-.41 3.01-.42
+               1.02.01 2.05.15 3.01.42
+               2.28-1.59 3.29-1.26 3.29-1.26
+               .66 1.7.25 2.95.12 3.26
+               .77.86 1.23 1.96 1.23 3.3
+               0 4.7-2.81 5.73-5.49 6.04
+               .43.38.81 1.12.81 2.26
+               0 1.63-.02 2.95-.02 3.35
+               0 .33.22.72.83.6
+               4.77-1.56 8.2-5.96 8.2-11.16
+               C23.5 5.74 18.27.5 12 .5z"
+          />
         </svg>
-        <span>GitHub</span>
-        </a>
+        <span>{{ _("GitHub") }}</span>
+      </a>
     </div>
   </footer>
 </body>

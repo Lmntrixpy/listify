@@ -23,9 +23,12 @@ services:
     networks:
       - listify_internal
       - external_net
+      - internal_net
 
 networks:
   listify_internal:
     driver: bridge
   external_net:
+    external: true
+  internal_net:
     external: true
