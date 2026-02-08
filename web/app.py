@@ -117,7 +117,6 @@ def api_create_playlist():
     if source not in {"liked", "top"}:
         return jsonify({"error": "invalid_source"}), 400
 
-    # time_range nur prüfen, wenn Top Tracks gewählt sind
     if source == "top" and time_range not in {"short_term", "medium_term", "long_term"}:
         return jsonify({"error": "invalid_time_range"}), 400
 

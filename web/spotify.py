@@ -196,7 +196,6 @@ def create_playlist(access_token: str, user_id: str, name: str, public: bool, de
 
 
 def add_tracks_to_playlist(access_token: str, playlist_id: str, uris: list[str]) -> None:
-    # Spotify supports up to 100 per request
     for i in range(0, len(uris), 100):
         chunk = uris[i : i + 100]
         api_post(access_token, f"/playlists/{playlist_id}/tracks", json={"uris": chunk})
