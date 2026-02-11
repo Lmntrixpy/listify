@@ -8,6 +8,9 @@ The app uses:
 - **Spotify Web API** (OAuth authentication)
 - **Docker & Docker Compose**
 
+## Disclaimer
+The app on the spotify dashboard is in development mode. Only added users can use (listify)[https://listify.rar-home.cloud] to convert their liked songs / top tracks. Everyone else need to self host it on their own, with their own api keys.
+
 ## Features
 - Login with Spotify
 - Create a playlist from:
